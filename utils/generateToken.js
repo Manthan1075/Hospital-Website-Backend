@@ -1,14 +1,14 @@
 import jwt from "jsonwebtoken"
 
 const generateToken = (res, user, message) => {
-    if (!process.env.JWT_SECRET) {
-        throw new Error('JWT_SECRET is not configured');
+    if (!process.env.SECRET_KEY_JWT) {
+        throw new Error('SECRET_KEY_JWT is not configured');
     }
 
     try {
         const token = jwt.sign(
             { userId: user._id },
-            process.env.JWT_SECRET,
+            process.env.SECRET_KEY_JWT,
             { expiresIn: "30d" }
         );
 

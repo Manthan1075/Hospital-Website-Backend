@@ -1,16 +1,16 @@
-import dotenv from "dotenv"
-import express from "express"
+import dotenv from "dotenv";
+import express from "express";
 import connectDB from "./Database/ConnectDb.js";
-import userRoute from "./Routes/user.route.js"
+import userRoute from "./Routes/user.route.js";
 import cookieParser from "cookie-parser";
-import cors from "cors"
+import cors from "cors";
+import sendOtp from "./sendOtp.js";
+import { authMiddleware } from "./Middleware/auth.js";
 
-// Load environment variables first
 dotenv.config();
 
-// Verify JWT_SECRET is available
-if (!process.env.JWT_SECRET) {
-    console.error('JWT_SECRET is not defined in environment variables');
+if (!process.env.SECRET_KEY_JWT) {
+    console.error('SECRET_KEY_JWT is not defined in environment variables');
     process.exit(1);
 }
 
@@ -19,7 +19,6 @@ const port = process.env.PORT || 5000;
 connectDB();
 const app = express();
 
-// Update CORS configuration
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true,
@@ -30,9 +29,11 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+app.use('/api/v1/user/profile', authMiddleware);
 app.use('/api/v1/user', userRoute);
 
-// Add error handling middleware
+app.post("/sendotp", sendOtp); 
+
 app.use((err, req, res, next) => {
     console.error('Error:', err);
     res.status(500).json({
@@ -41,7 +42,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log('Server running on port:', port);
-    console.log('JWT_SECRET is configured:', !!process.env.JWT_SECRET);
+    console.log('SECRET_KEY_JWT is configured:', !!process.env.SECRET_KEY_JWT);
 });

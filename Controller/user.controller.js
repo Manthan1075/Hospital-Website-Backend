@@ -87,6 +87,8 @@ export const userLogin = async (req,res)=>{
        }
 }
 
+
+
 export const googleLogin = async (req, res) => {
     try {
         const { email, name, picture, token } = req.body;
@@ -159,6 +161,30 @@ export const facebookLogin = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Facebook login failed"
+        });
+    }
+}
+
+export async function getUserData(req,res) {
+    try {
+        const email = req.email;
+        const user = await User.findOne({email});
+        
+        if(!user){
+            return res.status(404).json({
+                user : null,
+                message : "User Not Found"
+            })
+        }
+        return res.status(200).json({
+            user
+        })
+
+    } catch (error) {
+         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed To Fetch User Data"
         });
     }
 }
