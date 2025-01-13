@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     },
     password : {
         type : String,
-        required : true,
+        required : false,
+        minlength: 6,
     },
     mobileno : {
         type : String,
@@ -22,6 +23,22 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
         default: ""
+    },
+    city : {
+        type : String,
+        required : false,
+        default: ""
+    },
+    dob : {
+        type : String,
+        required : false,
+        default: ""
+    },
+    gender : {
+        type : String,
+        enum : ["Male", "Female", "Other",""],
+        required : false,
+        default : ""
     }
 }, {timestamps : true})
 

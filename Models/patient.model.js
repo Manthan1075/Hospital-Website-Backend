@@ -7,6 +7,43 @@ const patientSchema = new mongoose.Schema({
     },
     age :{
         type : Number,
-        required : true,
+
     },
+    mobileno : {
+        
+    },
+    address : {
+
+    },
+    doctor : {
+
+    },
+    department : {
+
+    },
+    patientId : {
+        type : String,
+        required : false
+    },
+    date : {
+
+    },
+    time : {
+
+    },
+    reasonOfAppointment : {
+        type : String,
+        required : false
+    },
+    fees : {
+
+    },
+    feesPaid : {
+        type : Boolean,
+        required : false
+    }
+
+
+    
+
 });
