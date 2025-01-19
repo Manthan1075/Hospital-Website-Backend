@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
         default: ""
     },
     dob : {
-        type : String,
+        type : Date,
         required : false,
         default: ""
     },
