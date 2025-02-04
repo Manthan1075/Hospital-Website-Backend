@@ -31,7 +31,8 @@ async function sendOtp(req, res) {
       subject: "Your OTP Code",
       text: `Your OTP for Sign-Up is: ${otp}`,
     });
- 
+    console.log(otp);
+    
     res.status(200).json({
       success: true,
       message: `OTP sent successfully to ${email}`,

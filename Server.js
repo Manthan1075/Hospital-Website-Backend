@@ -8,7 +8,7 @@ import sendOtp from "./sendOtp.js";
 import { jwtMiddleware } from "./utils/Tokens.js";
 
 dotenv.config();    
-
+7
 if (!process.env.SECRET_KEY_JWT) {
     console.error('SECRET_KEY_JWT is not defined in environment variables');
     process.exit(1);
@@ -43,6 +43,7 @@ app.use((err, req, res, next) => {
         success: false,
         message: err.message || 'Something went wrong!'
     });
+
 });
 
 app.listen(port, () => {
