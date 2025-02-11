@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import sendOtp from "./sendOtp.js";
 import { jwtMiddleware } from "./utils/Tokens.js";
+import appointmentRouter from "./Routes/Appointment.route.js";
 
 dotenv.config();    
 7
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/v1/user', userRoute);
+app.use('/api/v2/appointment',appointmentRouter);
 app.use('/api/v1/user/profile', jwtMiddleware, (req, res) => {
     res.status(200).json({ message: 'Profile route accessed successfully!' });
 });

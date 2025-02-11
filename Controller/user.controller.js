@@ -7,7 +7,6 @@ import { generateToken } from "../utils/Tokens.js";
 export const userSignup = async (req, res) => {
   try {
     const { name, email, password, mobileno } = req.body;
-    console.log(req.body);
 
     if (!(name || email || password || mobileno)) {
       return res.status(400).json({
