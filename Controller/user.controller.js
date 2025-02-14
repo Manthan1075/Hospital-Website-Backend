@@ -316,11 +316,13 @@ export const facebookLogin = async (req, res) => {
   }
 };
 
+//Get User Data
+
 export const getUserData = async (req,res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {
-      return res.status(404).json({ succevss: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
     res.json({ success: true, user });
   } catch (error) {

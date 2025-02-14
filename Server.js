@@ -24,14 +24,16 @@ app.use(cors({
     origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
 }));
+
 
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/v1/user', userRoute);
 app.use('/api/v2/appointment',appointmentRouter);
+
 app.use('/api/v1/user/profile', jwtMiddleware, (req, res) => {
     res.status(200).json({ message: 'Profile route accessed successfully!' });
 });

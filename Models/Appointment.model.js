@@ -32,10 +32,6 @@ const appointmentSchema = new mongoose.Schema({
             price: { type: String, required: true }
         }
     ],    
-    patientId: {
-        type: String,
-        required: false
-    },
     appointmentDate: {
         type: Date,
         required: true
@@ -59,6 +55,31 @@ const appointmentSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: false
+    },
+    patientID: {
+        type: String,
+        required: false
+    },
+    useremail: {
+        type: String,
+        required: true,
+    },
+    queueno : {
+        type: Number,
+        required: false
+    },
+    Token : {
+        type: String,
+        required: false
+    },
+    AppointmentStatus : {
+        type: String,
+        default: "Pending",
+        required: false
+    },
+    pendingAppointments : {
+        type : Number,
+        required : false
     }
 });
 
