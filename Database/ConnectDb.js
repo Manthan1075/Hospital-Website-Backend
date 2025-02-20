@@ -1,10 +1,11 @@
 import mongoose from "mongoose"
 
 
-async function connectDB() {
+async function connectDb() {
     // const localDbUrl = "mongodb://localhost:27017/Wellcare"
     const mongoDbUrl = process.env.MONGO_DB_URL;
     try {
+        // await mongoose.connect(localDbUrl);
         await mongoose.connect(mongoDbUrl)
         console.log("DB Connected");
     } catch (error) {
@@ -12,4 +13,4 @@ async function connectDB() {
     }
 }
 
-export default connectDB
+export default connectDb

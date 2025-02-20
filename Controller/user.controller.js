@@ -46,6 +46,7 @@ export const userSignup = async (req, res) => {
       sameSite: "strict",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
+
     return res.status(201).json({
       success: true,
       message: "Account Created successfully",
@@ -55,6 +56,7 @@ export const userSignup = async (req, res) => {
         email: response.email,
       },
     });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -116,6 +118,7 @@ export const userLogin = async (req, res) => {
       message: "Login Successful",
       token,
     });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).json({
