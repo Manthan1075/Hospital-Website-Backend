@@ -119,4 +119,34 @@ export const bookAppointment = async (req, res) => {
         }
     };
 
+    // Cancel Appointment
+export const cancelAppointment = async (req, res) => {
+  try {
+    const { patientID } = req.params;
+
+    if (!patientID) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Appointment ID is required" });
+    }
+
+    const deletedAppointment = await Appointment.findByIdAndDelete(patientID);
+
+    if (!deletedAppointment) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Appointment not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Appointment cancelled successfully" });
+  } catch (err) {
+    console.error("Error cancelling appointment:", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Error cancelling appointment" });
+  }
+};
+
   
