@@ -15,7 +15,7 @@ export const bookAppointment = async (req, res) => {
       paymentMethod,
       fees,
       paymentDetails,
-      patientId,
+      appointmentId,
       useremail
     } = req.body;
     
@@ -64,14 +64,14 @@ export const bookAppointment = async (req, res) => {
     //Patient ID Genrate 
         
     const dateObj = new Date(appointmentDate);
-    const formattedDate = `${String(dateObj.getDate()).padStart(2, "0")}/${String(dateObj.getMonth() + 1).padStart(2, "0")}/${dateObj.getFullYear()}`;
-    const patientID = `${token}-${formattedDate}-${queueNo}`;
+    const formattedDate = `${String(dateObj.getDate()).padStart(2, "0")}${String(dateObj.getMonth() + 1).padStart(2, "0")}${dateObj.getFullYear()}`;
+    const patientID = `${token}${formattedDate}${queueNo}`;
     
 
     const response = await Appointment.create({
       ...req.body,
       Token : token,
-      patientID: patientID, 
+      appointmentId: patientID, 
       AppointmentStatus: "Pending",
       queueno : queueNo,
       pendingAppointments : pendingAppointments,
@@ -122,15 +122,15 @@ export const bookAppointment = async (req, res) => {
     // Cancel Appointment
 export const cancelAppointment = async (req, res) => {
   try {
-    const { patientID } = req.params;
+    const { appointmentId } = req.params;
 
-    if (!patientID) {
+    if (!appointmentId) {
       return res
         .status(400)
         .json({ success: false, message: "Appointment ID is required" });
     }
 
-    const deletedAppointment = await Appointment.findByIdAndDelete(patientID);
+    const deletedAppointment = await Appointment.findByIdAndDelete(appointmentId);
 
     if (!deletedAppointment) {
       return res

@@ -134,89 +134,49 @@ export const googleLogin = async (req, res) => {
   try {
     const { email, name, profilePicture } = req.body;
 
-    if (!email || !name ) {
+    if (!email || !name) {
       return res.status(400).json({
         success: false,
         message: "Email and name are required",
       });
     }
 
-    const user = await User.findOne({ email });
-
+    let user = await User.findOne({ email });
 
     if (!user) {
-      try {
-        const response = await User.create({
-          name,
-          email,
-          profilePicture: profilePicture || "",
-        });
-
-        const token = generateToken({
-          id : response.id,
-          name: response.name,
-          email: response.email,
-          profilePicture: response.profilePicture,
-        });
-
-        console.log("User Controller Response SignUp google",response);
-        
-
-        res.cookie("token", token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "strict",
-          maxAge: 3 * 24 * 60 * 60 * 1000,
-        });
-
-        res.status(201).json({
-          success: true,
-          message: "Google Login Successfully",
-          token,
-        });
-      } catch (createError) {
-        console.error("User creation error:", createError);
-        return res.status(500).json({
-          success: false,
-          message: "Failed to create user account",
-        });
-      }
-    }
-
-    try {
-      const token = generateToken({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-      });
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: 3 * 24 * 60 * 60 * 1000,
-      });
-      
-      console.log("Success : Google log",token);
-    } catch (error) {
-      console.error("Google login error:", error);
-      return res.status(500).json({
-        success: false,
-        message: error.message || "Google login failed",
+      // Create a new user if not found
+      user = await User.create({
+        name,
+        email,
+        profilePicture: profilePicture || "",
       });
     }
 
+    // Generate token for the user
     const token = generateToken({
       id: user.id,
       email: user.email,
       name: user.name,
     });
 
+    // Set cookie with the token
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
       maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Google login successful",
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        profilePicture: user.profilePicture,
+      },
     });
   } catch (error) {
     console.error("Google login error:", error);
@@ -226,6 +186,7 @@ export const googleLogin = async (req, res) => {
     });
   }
 };
+
 export const facebookLogin = async (req, res) => {
   try {
     const { email, name, picture } = req.body;
@@ -257,7 +218,7 @@ export const facebookLogin = async (req, res) => {
 
         res.cookie("token", token, {
           httpOnly: true,
-          secure: true,
+          secure: false,
           sameSite: "strict",
           maxAge: 3 * 24 * 60 * 60 * 1000, 
         });
@@ -301,6 +262,12 @@ export const facebookLogin = async (req, res) => {
         success: true,
         message: "Facebook login successful",
         token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          profilePicture: user.profilePicture,
+        },
       });
     } catch (error) {
       console.error("Facebook login error:", error);

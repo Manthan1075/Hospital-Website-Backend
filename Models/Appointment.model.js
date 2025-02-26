@@ -56,7 +56,7 @@ const appointmentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    patientID: {
+    appointmentId: {
         type: String,
         required: false
     },
