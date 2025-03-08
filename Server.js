@@ -7,6 +7,7 @@ import cors from "cors";
 import sendOtp from "./sendOtp.js";
 import { jwtMiddleware } from "./utils/Tokens.js";
 import appointmentRouter from "./Routes/Appointment.route.js";
+import ClientRouter from "./Routes/ClientData.route.js";
 
 dotenv.config();    
 7
@@ -21,7 +22,8 @@ connectDB();
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5147"],
+    // origin: ["http://localhost:5173", "http://localhost:5147","http://localhost:4100"],
+    origin: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
@@ -33,6 +35,7 @@ app.use(cookieParser());
 
 app.use('/api/v1/user', userRoute);
 app.use('/api/v2/appointment',appointmentRouter);
+app.use('/api/v3/clientdata',ClientRouter);
 
 app.use('/api/v1/user/profile', jwtMiddleware, (req, res) => {
     res.status(200).json({ message: 'Profile route accessed successfully!' });
