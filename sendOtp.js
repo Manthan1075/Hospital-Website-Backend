@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 
 
-console.log(process.env.email);
 
 
 async function sendOtp(req, res) {
